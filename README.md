@@ -42,12 +42,28 @@
 - **Inference speed:** 0.77 ms/dòng và ~283k dòng/s trên CPU đã thừa cho hệ thống phát hiện gian lận realtime; GPU là dư thừa và tốn kém hơn.
 
 ## 5. Chi phí
+
+### 5.1. Ước tính theo giờ
 | Phương án | Cấu hình | Chi phí/giờ |
 |---|---|---|
 | **CPU (đang dùng)** | `e2-standard-8` + NAT + LB | **~$0.32** |
 | GPU | `n1-standard-4` + 1× T4 + NAT + LB | ~$0.54 |
 
 → Với workload tabular ML, **CPU rẻ hơn ~40% và hiệu năng tương đương** về thời gian — đây là bài học chọn hạ tầng đúng theo workload thay vì mặc định chọn GPU.
+
+### 5.2. Billing thực tế trên GCP (minh chứng)
+
+**Báo cáo chi phí (Billing → Reports, group by Service, tháng hiện tại):**
+
+![GCP Billing Reports — chi phí theo service](screenshoots/billing.jpg)
+
+| Service | Usage cost | Savings | Subtotal |
+|---|---|---|---|
+| Compute Engine | ₫1,069 | ₫0 | ₫1,069 |
+| Networking | ₫401 | −₫158 | ₫243 |
+| **Tổng (Total)** | | | **₫1,312** |
+
+> Tổng chi phí thực tế chỉ **₫1,312 (≈ $0.05)**, dồn quanh ngày 17/06. Con số rất nhỏ vì hạ tầng được **tạo → benchmark → `terraform destroy` ngay sau khi đo** (không để VM/NAT/IP chạy liên tục). Đây là thực hành FinOps quan trọng: chỉ trả tiền cho đúng thời lượng thực sự dùng, tránh lãng phí tài nguyên cloud sau khi hoàn thành lab.
 
 ## 6. Kết luận
 Chọn `e2-standard-8` (CPU) cho bài toán LightGBM là quyết định hợp lý cả về **chi phí lẫn hiệu năng**: train 4.4s, AUC-ROC 0.9787, inference < 1 ms/dòng, rẻ hơn phương án GPU mà không hề thua kém về tốc độ hay độ chính xác cho dữ liệu bảng.
