@@ -1,0 +1,19 @@
+{
+  "dataset_source": "kaggle:creditcard.csv",
+  "n_samples": 284807,
+  "n_features": 30,
+  "fraud_count": 492,
+  "load_time_sec": 1.756,
+  "train_time_sec": 4.416,
+  "best_iteration": 213,
+  "auc_roc": 0.978697,
+  "auc_pr": 0.869294,
+  "accuracy": 0.999561,
+  "f1": 0.864865,
+  "precision": 0.91954,
+  "recall": 0.816327,
+  "threshold": 0.251845,
+  "inference_latency_1row_ms": 0.7668,
+  "inference_throughput_1000rows_per_sec": 283051.3,
+  "machine_type": "e2-standard-8"
+}
